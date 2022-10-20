@@ -8,7 +8,7 @@ defaults:
 
 jobs:
   install_httpd:
-    runs-on: [self-hosted, wr-1]
+    runs-on: [self-hosted, wr-2012]
 
     steps:
       - name: checkout
