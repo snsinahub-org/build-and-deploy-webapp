@@ -1,4 +1,4 @@
-name: build-and-deply
+name: build-and-deply-to-iis
 
 on: 
   workflow_dispatch:
