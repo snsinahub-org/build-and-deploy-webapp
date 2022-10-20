@@ -1,0 +1,19 @@
+name: deploy-to-httpd
+on:
+  workflow_dispatch:
+    
+defaults:
+  run:
+    shell: powershell
+
+jobs:
+  install_httpd:
+    runs-on: [self-hosted, wr-1]
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: deploy-to-httpd
+        run: |
+          $DEST = 'C:\Apache24\htdocs'
+          Copy-Item -Path './html/index.html' -Destination $DEST
