@@ -1,26 +1,23 @@
 name: build-and-deply-to-iis
 
-on: 
+on:
   workflow_dispatch:
     inputs:
       env_name:
+        required: true
         type: choice
-        required: false
         options:
           - DEV
           - PROD
+          
 defaults:
   run:
     shell: powershell
 
-env: 
-  DEPLOY_PATH: 'c:/ws/dev'
-
-
 jobs:
   build_and_deply:
     runs-on: [self-hosted, wr-2012]
-    # environment: ${{ github.event.inputs.env_name }}
+    environment: ${{ github.event.inputs.env_name }}
 
     steps:
       - name: stop iis server
@@ -33,8 +30,8 @@ jobs:
 
       - name: build
         run: |
-          Remove-Item -Recurse -Force -Path "${{ env.DEPLOY_PATH }}\*"
-          Copy-Item -Path './html/index.html' -Destination ${{ env.DEPLOY_PATH }}
+          Remove-Item -Recurse -Force -Path "${{ secrets.IIS_PATH }}\*"
+          Copy-Item -Path './html/index.html' -Destination ${{ secrets.IIS_PATH }}
 
       - name: start iis server
         run: iisreset /start
