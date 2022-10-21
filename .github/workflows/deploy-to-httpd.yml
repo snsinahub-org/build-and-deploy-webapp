@@ -1,6 +1,14 @@
 name: deploy-to-httpd
 on:
   workflow_dispatch:
+    inputs:
+      env_name:
+        required: true
+        type: choice
+        options:
+          - DEV
+          - PROD
+      
     
 defaults:
   run:
@@ -9,11 +17,13 @@ defaults:
 jobs:
   install_httpd:
     runs-on: [self-hosted, wr-2012]
+    environment: ${{ github.event.inputs.env_name }}
 
     steps:
       - name: checkout
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
       - name: deploy-to-httpd
         run: |
-          $DEST = 'C:\Apache24\htdocs'
-          Copy-Item -Path './html/index.html' -Destination $DEST
+          Copy-Item -Path './html/index.html' -Destination ${{ secrets.PATH }}
